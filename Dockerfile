@@ -60,6 +60,7 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
             php7.3-intl \
             php7.3-xml \
             php-pear \
+	    ghostscript \
 #           php7.3-redis \
 #           php7.3-memcached \
     && pecl -d php_suffix=7.3 install -o -f redis memcached \
@@ -70,7 +71,8 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && rm -rf /etc/nginx/conf.d/default.conf \
     && sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" ${php_conf} \
     && sed -i -e "s/memory_limit\s*=\s*.*/memory_limit = 256M/g" ${php_conf} \
-    && sed -i -e "s/upload_max_filesize\s*=\s*100M/upload_max_filesize = 100M/g" ${php_conf} \
+    && sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" ${php_conf} \  
+    #&& sed -i -e "s/upload_max_filesize\s*=\s*100M/upload_max_filesize = 100M/g" ${php_conf} \ แก้ให้เหมือน version 4
     && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" ${php_conf} \
     && sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" ${php_conf} \
     && sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.3/fpm/php-fpm.conf \
